@@ -58,7 +58,7 @@ class SendEmailMixin(object):
     def get_to_email(self):
         return self.email
 
-    def send_email(self, subject, template_path, context, from_email=None, language=None, attachments=None):
+    def send_email(self, subject, template_path, context, from_email=None, language=None, reply_to=None, attachments=None):
         from .tasks import send_email
         if not DJANGO_SES_PLUS_SETTINGS["SEND_EMAIL"]:
             return _("Email cannot be sent due to SEND_EMAIL flag in project settings.")
@@ -91,7 +91,8 @@ class SendEmailMixin(object):
             html_message=html_message,
             attachments=attachments,
             from_email=from_email,
-            recipient_id=recipient_id
+            recipient_id=recipient_id,
+            reply_to=reply_to,
         )
 
         if language:

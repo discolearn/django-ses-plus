@@ -17,10 +17,12 @@ def sent_email_attachment_upload_path(sent_email_attachment, filename):
     return strftime(f"email-attachments/%Y/%m/%d/{uuid4().hex}{extension}")
 
 
-def send_mail(subject, message, from_email, recipient_list, fail_silently=False, html_message=None, attachments=None):
+def send_mail(subject, message, from_email, recipient_list, fail_silently=False,
+              html_message=None, attachments=None, reply_to=None):
     connection = get_connection(fail_silently=fail_silently)
 
-    mail = EmailMultiAlternatives(subject, message, from_email, recipient_list, connection=connection)
+    mail = EmailMultiAlternatives(subject, message, from_email, recipient_list,
+                                  reply_to=reply_to, connection=connection)
 
     if html_message:
         mail.attach_alternative(html_message, 'text/html')

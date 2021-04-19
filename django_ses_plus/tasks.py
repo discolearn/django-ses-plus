@@ -13,7 +13,8 @@ from .utils import send_mail
 
 
 @shared_task(retry_kwargs=DJANGO_SES_PLUS_SETTINGS["CELERY_TASK_RETRY_KWARGS"])
-def send_email(subject, to_email, html_message, from_email=None, message=None, recipient_id=None, attachments=None):
+def send_email(subject, to_email, html_message, from_email=None, message=None,
+               recipient_id=None, reply_to=None, attachments=None):
     if not DJANGO_SES_PLUS_SETTINGS["SEND_EMAIL"]:
         return _("Email cannot be sent due to SEND_EMAIL flag in project settings.")
 
@@ -27,6 +28,7 @@ def send_email(subject, to_email, html_message, from_email=None, message=None, r
         attachments=attachments,
         from_email=from_email,
         recipient_list=[to_email],
+        reply_to=reply_to,
         fail_silently=False,
     )
 
